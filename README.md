@@ -3,12 +3,15 @@
 A small practice project for learning the basics of building agents with the
 [Google Agent Development Kit (ADK)](https://google.github.io/adk-docs/).
 
-The project currently contains a simple algebra tutor implemented in two ways:
+The project currently contains two agents and a simple algebra tutor implemented
+in two ways:
 
 - `first_agent/agent.py` - a Python-defined agent using an ADK `Agent`, runner,
 	in-memory sessions, and an asynchronous event loop.
 - `yaml_agent/root_agent.yaml` - the same basic tutor defined with an ADK YAML
 	configuration.
+- `customer_support_agent/agent.py` - a customer support agent whose behavior is
+	shaped by detailed, structured instructions.
 
 This is an experimental learning project, not a production application.
 
@@ -59,6 +62,32 @@ adk web yaml_agent
 Open the local URL printed by the command and select `math_tutor_agent` to
 interact with it.
 
+## Try the structured-instructions agent
+
+The customer support agent demonstrates how detailed instructions can give an
+agent a consistent role, workflow, and response style:
+
+```powershell
+adk web customer_support_agent
+```
+
+Its instruction uses five reusable patterns:
+
+- **Identity** - defines who the agent is and its expertise.
+- **Mission** - explains what the agent is responsible for.
+- **Methodology** - gives the agent a repeatable way to work.
+- **Boundaries** - defines what the agent will not do and when it should
+	escalate.
+- **Examples** - demonstrates how the agent should respond in common situations.
+
+The `instruction` parameter is arguably the most important control for shaping
+agent behavior. These instruction boundaries add role-specific control on top
+of the model's built-in safety settings. Tool-based responses can reduce
+hallucinations by grounding answers in facts, while Markdown formatting helps
+the model interpret and follow structured instructions consistently, in line
+with ADK best practices. The patterns can be mixed and matched for different
+agent types.
+
 ## Project structure
 
 ```text
@@ -67,6 +96,8 @@ interact with it.
 │   └── agent.py          # Python-defined math tutor
 ├── yaml_agent/
 │   └── root_agent.yaml   # YAML-defined math tutor
+├── customer_support_agent/
+│   └── agent.py          # Customer support agent with structured instructions
 ├── main.py               # Minimal project entry point placeholder
 ├── pyproject.toml        # Project metadata and dependencies
 └── README.md
@@ -79,3 +110,4 @@ interact with it.
 - Create and use in-memory sessions
 - Process asynchronous agent events
 - Compare Python and YAML agent definitions
+- Design professional agent instructions with reusable patterns
