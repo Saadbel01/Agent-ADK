@@ -37,6 +37,7 @@ async def run_agent():
         user_id=USER_ID,
         session_id=SESSION_ID
     )
+
     print(f"Session created: {SESSION_ID}\n")
 
     # Prepare user message
