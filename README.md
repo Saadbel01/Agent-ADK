@@ -18,6 +18,12 @@ how ADK agents can be built, configured, and specialized:
 	facts and returns validated JSON via `output_schema`.
 - `model_comparison/agent.py` - a comparison example showing different
 	temperature and safety settings for factual vs creative tasks.
+- `name_extractor/agent.py` - an agent that stores extracted data in session
+	state with `output_key`.
+- `personalized_greeter/agent.py` - a personalized agent that injects state
+	values into instructions with ADK templating and fallback values.
+- `namespace_demo/agent.py` - a demonstration of ADK's app, user, session, and
+	temporary state namespaces.
 
 This is an experimental learning project, not a production application.
 
@@ -134,6 +140,43 @@ schema instead of free-form text.
 The `model_comparison` example is useful for comparing how changes to model,
 temperature, output length, and safety settings affect agent behavior.
 
+## Session state examples
+
+### Name extractor
+
+The name extractor saves the agent's response under the `user_name` state key
+using `output_key`. Its test script also shows how to inspect the resulting
+session state:
+
+```powershell
+python -m name_extractor.test_agent
+```
+
+### Personalized greeter
+
+The personalized greeter reads values such as the user's name, preferred
+language, and membership tier from session state. It uses default values when
+those fields are not available and can be exercised with:
+
+```powershell
+python -m personalized_greeter.test_templating
+```
+
+### State namespaces
+
+The namespace demo compares the persistence of the four ADK state scopes:
+
+- `app:` - shared across the application.
+- `user:` - shared across sessions for the same user.
+- Session state - available throughout one conversation.
+- `temp:` - available only during the current turn.
+
+Run the demonstration with:
+
+```powershell
+python -m namespace_demo.testnamespaces
+```
+
 ## Project concepts covered
 
 - Agent setup with `LlmAgent`
@@ -146,6 +189,9 @@ temperature, output length, and safety settings affect agent behavior.
 - Structured outputs with `output_schema`
 - Model behavior tuning through `GenerateContentConfig`
 - Safety settings and grounded response design
+- Session state with `output_key`
+- State templating with fallback values
+- App, user, session, and temporary state namespaces
 
 ## Project structure
 
@@ -163,6 +209,15 @@ temperature, output length, and safety settings affect agent behavior.
 │   └── agent.py            # Product extraction with structured output schema
 ├── model_comparison/
 │   └── agent.py            # Factual vs creative model tuning example
+├── name_extractor/
+│   ├── agent.py            # Extracts a name into session state
+│   └── test_agent.py       # Runs the state storage example
+├── personalized_greeter/
+│   ├── agent.py            # Uses state values in instruction templates
+│   └── test_templating.py  # Exercises default and personalized values
+├── namespace_demo/
+│   ├── agent.py            # Demonstrates ADK state namespaces
+│   └── testnamespaces.py   # Compares namespace persistence
 ├── main.py                 # Minimal project entry point placeholder
 ├── pyproject.toml          # Project metadata and dependencies
 ├── README.md               # Project overview and usage notes
@@ -180,3 +235,6 @@ temperature, output length, and safety settings affect agent behavior.
 - Use planning tools to support complex reasoning
 - Enforce structured outputs with schemas and validation
 - Tune model behavior for different use cases
+- Store agent results in session state with `output_key`
+- Personalize instructions with state templating
+- Understand how state persistence differs across ADK namespaces
