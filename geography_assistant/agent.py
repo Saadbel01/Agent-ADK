@@ -39,3 +39,23 @@ def get_capital_city(country: str) -> str:
     # Look up the capital
     return capitals.get(country.lower(), "Sorry, I don't have information"
                         f" about the capital of {country}.")
+
+
+# Step 2: Create agent with the tool
+root_agent = LlmAgent(
+    model='gemini-2.5-flash',
+    name='geography_assistant',
+    description='Helps users learn about world geography.',
+    instruction="""
+    You are a geography assistant that helps users learn about world capitals.
+
+    When a user asks about a capital city:
+    1. Use the get_capital_city tool to find the answer
+    2. Provide the information in a friendly, educational way
+    3. You can add interesting facts if you know them
+
+    If the tool returns an error message, politely tell the user you don't have
+    that information.
+    """,
+    tools=[get_capital_city]  # Provide the function as a tool
+)
